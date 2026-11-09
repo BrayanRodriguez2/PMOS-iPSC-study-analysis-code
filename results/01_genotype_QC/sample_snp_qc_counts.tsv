@@ -1,0 +1,13 @@
+step	samples	variants	removed_in_step
+S0 raw (b38, as converted)	140	777016	NA
+S1 samples passing QC (step 09)	129	777016	0
+S2 variant call rate >= 98%	129	746167	30849
+S3 remove monomorphic	129	525949	220218
+S4 HWE p >= 1e-6	129	525809	140
+S5 MAF >= 0.01	129	472459	53350
+S6 autosomes only = b38_qc	129	449119	23340
+10.A_after_palindromic	129	448658	461
+10.B_after_incompatible	129	448652	6
+10.C_after_dedup_rsid	129	447394	1258
+10.D_final	129	447260	134
+FINAL b38_qc_rsid (renamed copy)	129	447260	0

@@ -1,0 +1,5 @@
+step	variants_after	removed
+v1 (uploaded to the QC-only job)	510607	-
+- TOPMed 'Allele mismatch'	510425	182
+- frequency-discordant (> 0.2 vs TOPMed) not supported by 1000G FIN	510412	13
+v2 (final)	510412	195

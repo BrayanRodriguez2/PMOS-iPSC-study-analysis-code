@@ -1,0 +1,21 @@
+# local configuration and secrets
+config/config.sh
+*.pw
+.topmed_pw
+# job logs and caches
+logs/
+__pycache__/
+*.pyc
+# never commit individual-level data
+*.bed
+*.bim
+*.fam
+*.pgen
+*.pvar
+*.psam
+*.vcf
+*.vcf.gz
+*.bam
+*.fastq.gz
+*.idat
+*.gtc

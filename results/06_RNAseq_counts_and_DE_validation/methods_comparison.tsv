@@ -1,0 +1,6 @@
+model	method	genes_tested	genes_p05	genes_FDR10	min_adj_p	ols_genes_p05	overlap_nominal	spearman_signed_p_vs_ols	pearson_log2FC_vs_ols
+group	deseq2	16495	435	0	0.9995	422	295	0.9737	0.8882
+group	limma_voom	16495	360	0	0.9996	422	290	0.9938	0.992
+group	Original S4 (original counts)	14868	386	0		386	300	0.9592	0.9378
+group_xist	deseq2	16495	739	0	0.9993	634	474	0.9786	0.9164
+group_xist	limma_voom	16495	529	0	0.9958	634	439	0.9951	0.9927

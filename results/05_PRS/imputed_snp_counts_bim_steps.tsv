@@ -1,0 +1,16 @@
+step	UKBB_EUR	1000G_EUR
+panel	UKBB EUR (V1, V3)	1000G EUR (V2)
+1_panel_snps	1117425	1120696
+2_with_grch38_position_from_sumstats	1114979	1116678
+3_allele_compatible_with_prscs_sumstats	1114978	1116677
+3b_of_which_strand_ambiguous_AT_CG	0	0
+4_present_in_clean_file_position_and_alleles	1079002	1080484
+5_after_excluding_strand_ambiguous	1079002	1080484
+5b_dropped_ambiguous_site_or_two_matches	0	0
+5c_dropped_clean_variant_claimed_by_two_rsids	0	0
+5d_duplicated_rsid_rows	0	0
+6_final_snps_in_prscs_bim_and_map	1079002	1080484
+6b_of_which_R2_ge_0.8	1072306	1073440
+6c_of_which_typed	168519	169900
+6d_pct_of_usable_panel (step 3)	96.77	96.76
+6e_strand_complement	538	543

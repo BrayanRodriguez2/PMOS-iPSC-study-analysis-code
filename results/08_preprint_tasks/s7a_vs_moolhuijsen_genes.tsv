@@ -1,0 +1,34 @@
+locus_rsid	S7a_consensus_label	S7a_gene	ST2_nearest_gene	ST2_consensus_gene	ST9_best_consensus_gene	ST9_bioinformatics_top_gene	S7a_gene_in_paper_consensus_field	S7a_gene_named_in_ST9_text	verdict
+rs670441	HHAT	HHAT	HHAT	HHAT	HHAT	HHAT (score 99, rank 8)	True	True	match
+rs7589428	THADA	THADA	THADA	THADA	THADA	ZFP36L2  (score 94, rank  25	True	True	match
+rs76658602	MSH6	MSH6	MSH6	MSH6	MSH6	MSH6 (score 100, rank 3)	True	True	match
+rs13004711	FSHR	FSHR	FSHR	FSHR	FSHR	FSHR (score 88, rank 52)	True	True	match
+rs6712151	INHBB	INHBB	INHBB	INHBB	INHBB	INHBB (score 41, rank 238)	True	True	match
+rs13389190	TEX41	TEX41	TEX41	TEX41	TEX41	TEX41 (score 46, rank 220)	True	True	match
+rs74690816	ERBB4	ERBB4	ERBB4	ERBB4	ERBB4	ERBB4 (score 50, rank 202)	True	True	match
+rs12488257	TOPAZ1	TOPAZ1	C3orf23/TCAIM	TOPAZ1	TOPAZ1	ZNF501 (score 93, rank 29)	True	True	match
+rs9312937	MYO10	MYO10	MYO10	MYO10	MYO10	BASP1 (score 40, rank 244)	True	True	match
+rs2070729	IRF / RAD50	IRF1	IRF1	IRF / RAD50	IRF1 / RAD50	IRF1 (score 94, rank 26)	True	True	match
+rs2070729	IRF / RAD50	RAD50	IRF1	IRF / RAD50	IRF1 / RAD50	IRF1 (score 94, rank 26)	True	True	match
+rs12526762	ID4	ID4	ID4	ID4	ID4	ID4 (score 98, rank 12)	True	True	match
+rs148982377	CYP3 complex	CYP3A7	ZNF789	CYP3 complex	CYP3 complex	ZNF789 (score 53, rank 189)	False	True	DIFFERENCE: the paper gives a complex (CYP3 complex); S7a picks specific gene(s)
+rs148982377	CYP3 complex	CYP3A5	ZNF789	CYP3 complex	CYP3 complex	ZNF789 (score 53, rank 189)	False	False	DIFFERENCE: the paper gives a complex (CYP3 complex); S7a picks specific gene(s)
+rs804263	NEIL2 / GATA4	NEIL2	NEIL2	NEIL2 / GATA4	NEIL2 / GATA4	NEIL2 (score 97, rank 14)	True	True	match
+rs804263	NEIL2 / GATA4	GATA4	NEIL2	NEIL2 / GATA4	NEIL2 / GATA4	NEIL2 (score 97, rank 14)	True	True	match
+rs2183958	FANCC	FANCC	C9orf3	FANCC	FANCC	FANCC (score 98, rank 10)	True	True	match
+rs3945628	DENND1A	DENND1A	DENND1A	DENND1A	DENND1A	LHX2 (score 99, rank 5)  DENND1A (score 96, rank 17)	True	True	match
+rs11031005	FSHB	FSHB	FSHB	FSHB	FSHB	MPPED2 (score 98, rank 9)	True	True	match
+rs4944653	PRSS23	PRSS23	LOC100506368	PRSS23	PRSS23	PRSS23 (score 52, rank 194)	True	True	match
+rs7925543	YAP1	YAP1	YAP1	YAP1	YAP1	YAP1 (score 100, rank 2)	True	True	match
+rs1784692	ZBTB16	ZBTB16	ZBTB16	ZBTB16	ZBTB16	ZBTB16 (score 96, rank 18)	True	True	match
+rs10876864	ERBB3	ERBB3	SUOX/IKZF4	ERBB3	ERBB3	ERBB3 (score 100, rank 1)	True	True	match
+rs117568227	HELB / HMGA2	HELB	LLPH	HELB / HMGA2	HELB / HMGA2	LINC02425 (score 41, rank 237)	True	True	match
+rs117568227	HELB / HMGA2	HMGA2	LLPH	HELB / HMGA2	HELB / HMGA2	LINC02425 (score 41, rank 237)	True	True	match
+rs1824982	KRR1	KRR1	KRR1	KRR1	KRR1	KRR1 (score 56, rank 177)	True	True	match
+rs11075468	TOX3	TOX3	TOX3	TOX3	TOX3	CASC22 (score 41, rank 240)	True	True	match
+rs8047587	FTO	FTO	FTO	FTO	FTO	RBL2 (score 55, rank 182)	True	True	match
+rs12149203	MAF	MAF	MAF	MAF	MAF	MAFTRR (score 55, rank 181)	True	True	match
+rs1641518	SHBG	SHBG	ATP1B2	SHBG	SHBG	ATP1B2 (score 100, rank 4)	True	True	match
+rs732310	AMH	AMH	REXO1	AMH	AMH	LOC100288123 (score 58, rank 170)	True	True	match
+rs853854	MAPRE1	MAPRE1	MAPRE1	MAPRE1	MAPRE1	MAPRE1 (score 99, rank 6)	True	True	match
+rs17880096	CHEK2	CHEK2	CHEK2	CHEK2	CHEK2	CHEK2 (score 93, rank 31)	True	True	match

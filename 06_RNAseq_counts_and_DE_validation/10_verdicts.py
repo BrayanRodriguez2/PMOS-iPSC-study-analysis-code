@@ -1,0 +1,95 @@
+#!/usr/bin/env python
+# ---------------------------------------------------------------------------
+# Release file: 06_RNAseq_counts_and_DE_validation/10_verdicts.py   (original step script: 69_verdicts.py)
+# Produces: Expected-vs-obtained table with verdicts.
+# Run: python 06_RNAseq_counts_and_DE_validation/10_verdicts.py <args>   (or from a SLURM script; see the usage line below)
+# Paths are variables from config/config.sh; individual-level data are NOT part of this repository.
+# ---------------------------------------------------------------------------
+"""
+Step 69 - "expected vs obtained" table with a verdict for every number of the figure book that was checked.
+Columns: expected (figure book / the original tables), the original code on the original data (step 66b logs), our code on the original data, our code on our counts (stranded, main), our code on our counts (unstranded),
+verdict ACCEPT (matches, or the difference does not change the conclusion) / CHECK (a difference that has to be explained) / DISCARD (not supported), reason.
+Values for our code come from analysis/<tag>/numbers.tsv (step 65), methods_comparison.tsv (67b), step1 (64) and clinical (65a); original-code values were read from the logs of step 66b
+(log_an1/log_an2/log_an_restore) and are typed below (the logs are kept in DEG_validation/their_run).
+Usage: python 06_RNAseq_counts_and_DE_validation/10_verdicts.py <results_dir> <their_run_dir> <out_dir>
+"""
+import os, sys
+import numpy as np, pandas as pd
+
+R, T, out = sys.argv[1:4]; os.makedirs(out, exist_ok=True)
+nm = {t: pd.read_csv(f"{R}/analysis/{t}/numbers.tsv", sep="\t").set_index("key").value for t in ("ours_s2", "ours_s0", "theirs")}
+mc = pd.read_csv(f"{R}/methods/methods_comparison.tsv", sep="\t").set_index(["model", "method"])
+mw = pd.read_csv(f"{R}/clinical/clinical_mannwhitney.tsv", sep="\t").set_index("variable")
+cl = pd.read_csv(f"{R}/step1/compare_per_line.tsv", sep="\t", index_col=0)
+f = lambda v, d=3: (f"{float(v):.{d}f}" if isinstance(v, (int, float, np.floating, np.integer)) or str(v).replace('.', '', 1).replace('e-', '', 1).replace('-', '', 1).isdigit() else str(v))
+g = lambda t, k, d=3: f(nm[t][k], d)
+rows = []
+
+
+def add(fig, item, exp, her, o_her, o_s2, o_s0, verdict, reason):
+    rows.append(dict(figure_or_table=fig, item=item, expected=exp, her_code_her_data=her, our_code_her_data=o_her, our_code_our_counts_stranded=o_s2, our_code_our_counts_unstranded=o_s0, verdict=verdict, reason=reason))
+
+
+def tri(key, d=3):
+    return g("theirs", key, d), g("ours_s2", key, d), g("ours_s0", key, d)
+
+
+a, b, c = tri("n_expressed", 0)
+add("Fig 1 / 3", "expressed genes (>= 10 normalised counts in >= 7 of 14 lines)", "16,489", "16,489", a, b, c, "ACCEPT", "Same number within 1 % (16,495 / 16,678 from our own counts).")
+add("Fig 1 / 3", "overlap of our expressed-gene list with the original Table S4 list (by symbol)", "16,489 (identical)", "16,489", "16,489", f"{nm['ours_s2']['n_expressed_in_her_S4_list']} (ours only {nm['ours_s2']['expressed_only_ours']}, the original only {nm['ours_s2']['expressed_only_hers']})",
+    f"{nm['ours_s0']['n_expressed_in_her_S4_list']}", "CHECK", "Count agrees but ~10 % of the genes differ: the original counts miss 235 well-expressed genes (TUBB, RPS18, PRPF8, many on chr6/MHC; probable multi-mapping loss from alt/patch contigs) and contain processed pseudogenes that absorb reads, and some symbols differ by annotation version.")
+add("Counts", "library orientation / the original counting mode", "(not stated)", "-", "-", f"reverse-stranded: -s 2 assigns {100 * pd.read_csv(f'{R}/step1/strandedness.tsv', sep=chr(9), index_col=0).s2.mean():.1f} %, -s 1 {100 * pd.read_csv(f'{R}/step1/strandedness.tsv', sep=chr(9), index_col=0).s1.mean():.1f} %",
+    "our unstranded XIST values equal the original (log2 12.02 vs 12.02 for HEL362.1)", "CHECK", "The original normalised counts behave like unstranded counting of a reverse-stranded library (XIST about 2x lower than stranded counting because TSIX overlaps it). Does not change the conclusions but changes XIST-based items below.")
+add("Fig 3C", "OLS ~ PMOS: genes with p < 0.05", "443", "443", *tri("ols_PMOS_p<0.05", 0), "ACCEPT", "Reproduced exactly from the original counts; 422-424 from ours (-5 %), same conclusion.")
+add("Fig 3C", "OLS ~ PMOS: genes with FDR < 0.1", "0", "0", *tri("ols_PMOS_FDR<0.1", 0), "ACCEPT", "No gene reaches FDR < 0.1 in any of the inputs (min FDR 0.9993-1.0).")
+add("Fig 3C", "OLS ~ PMOS + log2 XIST: genes with p < 0.05", "627", "627", *tri("ols_PMOS+XIST_p<0.05", 0), "ACCEPT", "Reproduced exactly from the original counts; 617-634 from ours.")
+add("Table S4", "gene-wise concordance with the original S4 (log2FC Pearson r / nominal genes shared)", "-", "r = 1.000 (reproduced)", f"r {g('theirs', 'vsS4_PMOS_pearson_log2FC')} / {nm['theirs']['vsS4_PMOS_nominal_overlap']} of {nm['theirs']['vsS4_PMOS_nominal_hers']}",
+    f"r {g('ours_s2', 'vsS4_PMOS_pearson_log2FC')} / {nm['ours_s2']['vsS4_PMOS_nominal_overlap']} of {nm['ours_s2']['vsS4_PMOS_nominal_hers']}", f"r {g('ours_s0', 'vsS4_PMOS_pearson_log2FC')} / {nm['ours_s0']['vsS4_PMOS_nominal_overlap']} of {nm['ours_s0']['vsS4_PMOS_nominal_hers']}",
+    "ACCEPT", "Effects and p values agree (r 0.94 / 0.92) on the 14,868 shared genes; ~78 % of the nominal genes are shared, as expected for noise-level p values with 14 samples.")
+add("Table S15 / Fig S2", "top 40 genes by nominal p: overlap with the original list", "40", "40", *tri("top40_overlap_with_S15", 0), "CHECK", "Only 25-26 of the original 40 top genes are top-40 in our counts: the gene list of Table S15 / Fig S2 is not robust to the quantification (all p are nominal, none significant); present it as illustrative.")
+add("Fig 3A", "PCA 1,000 most variable genes: PC1 / PC2 (%)", "43.1 / 8.5", "43.1 / 8.5", f"{g('theirs', 'pca_top1000_PC1_%', 1)} / {g('theirs', 'pca_top1000_PC2_%', 1)}", f"{g('ours_s2', 'pca_top1000_PC1_%', 1)} / {g('ours_s2', 'pca_top1000_PC2_%', 1)}", f"{g('ours_s0', 'pca_top1000_PC1_%', 1)} / {g('ours_s0', 'pca_top1000_PC2_%', 1)}", "ACCEPT", "Within ~1 point; PC1 dominated by the same factors.")
+add("Fig S1A", "PCA all expressed genes: PC1 / PC2 (%)", "34.6 / 9.9", "34.6 / 9.9", f"{g('theirs', 'pca_all_PC1_%', 1)} / {g('theirs', 'pca_all_PC2_%', 1)}", f"{g('ours_s2', 'pca_all_PC1_%', 1)} / {g('ours_s2', 'pca_all_PC2_%', 1)}", f"{g('ours_s0', 'pca_all_PC1_%', 1)} / {g('ours_s0', 'pca_all_PC2_%', 1)}", "ACCEPT", "36.6 / 10.0 from our stranded counts, 35.5 / 9.9 unstranded.")
+add("Fig S1B", "PC1-5 vs traits: only PC1-age significant (rho -0.54, p 0.044)", "PC1-age, p 0.044", "PC1-age (|rho| 0.54, p 0.044; sign depends on the SVD orientation)", nm["theirs"]["pc_trait_significant_pairs"], nm["ours_s2"]["pc_trait_significant_pairs"] + f"; PC1-age rho {g('ours_s2', 'PC1_age_rho', 2)}, p {g('ours_s2', 'PC1_age_p')}",
+    f"none; PC1-age p {g('ours_s0', 'PC1_age_p')}", "CHECK", "The original PC1-age (p 0.044) is borderline and is not reproduced with our counts (p 0.09), where another pair (PC5-AMH, p 0.047) is the only one under 0.05: with 14 samples and 40 tests these are chance-level; the statement 'only PC1-age is significant' should not be used.")
+add("Fig 3B", "Pearson r between lines (min-max)", "0.936-0.982", "0.936-0.982", f"{g('theirs', 'line_corr_min')}-{g('theirs', 'line_corr_max')}", f"{g('ours_s2', 'line_corr_min')}-{g('ours_s2', 'line_corr_max')}", f"{g('ours_s0', 'line_corr_min')}-{g('ours_s0', 'line_corr_max')}", "ACCEPT", "Same range (0.932-0.983).")
+add("Fig 3B", "exact test within - between r: diagnosis (3,432 splits)", "p 0.79", "0.791", *tri("corr_exact_p_diagnosis"), "ACCEPT", "p 0.80-0.81: lines do not cluster by diagnosis.")
+add("Fig 3B", "exact test: BMI category (3,432 splits)", "p 0.08", "0.083", *tri("corr_exact_p_BMI_category"), "ACCEPT", "p 0.075-0.083.")
+add("Fig 3B", "exact test: XIST erosion", "p 0.033 (364 splits)", "0.033 (364)", g("theirs", "corr_exact_p_XIST_erosion"), g("ours_s2", "corr_exact_p_XIST_erosion") + " (2 eroded lines, 91 splits)", g("ours_s0", "corr_exact_p_XIST_erosion") + " (3 eroded lines, 364 splits)", "CHECK",
+    "With stranded counts HEL363.2 is at log2 XIST 8.27, just above the cut-off of 8 (the original unstranded value 7.25), so only 2 lines are 'eroded' and p becomes 0.011; with the original definition (3 lines) p is 0.030-0.033. The result depends on a borderline line and on the counting mode.")
+add("Fig 3D", "genes with Spearman p < 0.05 for PMOS vs exact null median (3,432 splits)", "505 vs 708, p 0.75", "505 vs 708, p 0.749", f"{g('theirs', 'nsig_PMOS_obs', 0)} vs {g('theirs', 'nsig_PMOS_null_median', 0)}, p {g('theirs', 'nsig_PMOS_perm_p')}", f"{g('ours_s2', 'nsig_PMOS_obs', 0)} vs {g('ours_s2', 'nsig_PMOS_null_median', 0)}, p {g('ours_s2', 'nsig_PMOS_perm_p')}", f"{g('ours_s0', 'nsig_PMOS_obs', 0)} vs {g('ours_s0', 'nsig_PMOS_null_median', 0)}, p {g('ours_s0', 'nsig_PMOS_perm_p')}", "ACCEPT", "Fewer genes than expected by chance in every input.")
+add("Fig 3D / S5b", "other traits (AMH, testosterone, FAI, FG, BMI, HOMA-IR, age): permutation p all > 0.05", "S5b: 0.56, 0.53, 0.66, 0.35, 0.12, 0.36, 0.077", "(same, seed 42; draws differ slightly: 0.54-0.65, age 0.070)", "0.54, 0.52, 0.65, 0.34, 0.13, 0.33, 0.070",
+    f"{g('ours_s2', 'nsig_AMH_perm_p', 2)}, {g('ours_s2', 'nsig_Testosterone_perm_p', 2)}, {g('ours_s2', 'nsig_FAI_perm_p', 2)}, {g('ours_s2', 'nsig_FG score_perm_p', 2)}, {g('ours_s2', 'nsig_BMI_perm_p', 2)}, {g('ours_s2', 'nsig_HOMA-IR_perm_p', 2)}, {g('ours_s2', 'nsig_Age_perm_p', 2)}",
+    f"{g('ours_s0', 'nsig_AMH_perm_p', 2)}, {g('ours_s0', 'nsig_Testosterone_perm_p', 2)}, {g('ours_s0', 'nsig_FAI_perm_p', 2)}, {g('ours_s0', 'nsig_FG score_perm_p', 2)}, {g('ours_s0', 'nsig_BMI_perm_p', 2)}, {g('ours_s0', 'nsig_HOMA-IR_perm_p', 2)}, {g('ours_s0', 'nsig_Age_perm_p', 2)}", "ACCEPT", "None below 0.05 in any input; age is the closest (0.065-0.070).")
+add("Fig 4A", "variance partition medians PMOS / BMI / age / XIST / residual (%)", "3.2 / 5.2 / 7.5 / 6.2 / 64.1", "3.2 / 5.2 / 7.5 / 6.2 / 64.1", " / ".join(g("theirs", f"vp_median_{k}", 1) for k in ["PMOS status", "BMI", "Age", "XIST (log2)", "Residual"]),
+    " / ".join(g("ours_s2", f"vp_median_{k}", 1) for k in ["PMOS status", "BMI", "Age", "XIST (log2)", "Residual"]), " / ".join(g("ours_s0", f"vp_median_{k}", 1) for k in ["PMOS status", "BMI", "Age", "XIST (log2)", "Residual"]), "ACCEPT", "Medians agree within 0.6 point; PMOS status explains less than the null median (3.8 %).")
+add("Fig 4A", "variance partition permutation p: PMOS / BMI / age / XIST", "0.72 / 0.22 / 0.04 / 0.11", "0.701 / 0.213 / 0.046 / 0.100 (the original code re-run: the permutation draw differs a little)", " / ".join(g("theirs", f"vp_perm_p_{k}") for k in ["PMOS status", "BMI", "Age", "XIST (log2)"]),
+    " / ".join(g("ours_s2", f"vp_perm_p_{k}") for k in ["PMOS status", "BMI", "Age", "XIST (log2)"]), " / ".join(g("ours_s0", f"vp_perm_p_{k}") for k in ["PMOS status", "BMI", "Age", "XIST (log2)"]), "CHECK",
+    "Age p is 0.04-0.053 depending on the permutation draw (the original own code gives 0.046 instead of 0.04): the 'age is significant' statement sits on the 0.05 border and should be worded as 'nominal'.")
+add("Fig 4B", "BMI-category model: genes p < 0.05 / shared with the 443", "465 / 362", "465 / 362", f"{g('theirs', 'bmi_cat_PMOS_p<0.05', 0)} / {g('theirs', 'bmi_cat_overlap_with_main', 0)}", f"{g('ours_s2', 'bmi_cat_PMOS_p<0.05', 0)} / {g('ours_s2', 'bmi_cat_overlap_with_main', 0)}", f"{g('ours_s0', 'bmi_cat_PMOS_p<0.05', 0)} / {g('ours_s0', 'bmi_cat_overlap_with_main', 0)}", "ACCEPT", "Same pattern (about 80 % shared); 0 genes at FDR < 0.1 everywhere.")
+add("Fig 4C", "XIST-eroded lines (log2 XIST < 8)", "HEL361.2, HEL349.4, HEL363.2", "HEL349.4, HEL361.2, HEL363.2", nm["theirs"]["xist_eroded_lines"], nm["ours_s2"]["xist_eroded_lines"] + " (HEL363.2: 8.27)", nm["ours_s0"]["xist_eroded_lines"], "CHECK", "HEL361.2 and HEL349.4 are clearly eroded in all inputs; HEL363.2 is borderline (7.25 unstranded, 8.27 stranded): state the cut-off and the counting mode.")
+add("Fig 4C", "all eroded lines are controls: Fisher p", "0.19", "0.19", g("theirs", "xist_erosion_fisher_p", 2), g("ours_s2", "xist_erosion_fisher_p", 2) + " (2/0)", g("ours_s0", "xist_erosion_fisher_p", 2) + " (3/0)", "CHECK", "0.19 with 3 eroded controls (the original definition); 0.46 with the 2 clearly eroded lines. Either way not significant.")
+add("Fig 4D", "XIST vs KDM5C Spearman rho (p)", "-0.78 (0.001)", "-0.776 (0.0011)", f"{g('theirs', 'XIST_KDM5C_rho')} ({g('theirs', 'XIST_KDM5C_p', 4)})", f"{g('ours_s2', 'XIST_KDM5C_rho')} ({g('ours_s2', 'XIST_KDM5C_p', 4)})", f"{g('ours_s0', 'XIST_KDM5C_rho')} ({g('ours_s0', 'XIST_KDM5C_p', 4)})", "ACCEPT", "Same strong negative correlation (-0.78 to -0.81).")
+for lab, key, exp in [("all 14", "S8_all 14", "505 / 708 / 0.749 (3,432)"), ("excl. HEL350.3, HEL351.3", "S8_excl. HEL350.3, HEL351.3", "491 / 625 / 0.663 (792)")]:
+    add("Table S8", f"PMOS test, {lab}: genes p < 0.05 / null median / perm p (splits)", exp, "(code not preserved)", f"{g('theirs', key + '_genes_p05', 0)} / {g('theirs', key + '_null_median', 1)} / {g('theirs', key + '_perm_p')} ({g('theirs', key + '_n_splits', 0)})",
+        f"{g('ours_s2', key + '_genes_p05', 0)} / {g('ours_s2', key + '_null_median', 1)} / {g('ours_s2', key + '_perm_p')} ({g('ours_s2', key + '_n_splits', 0)})", f"{g('ours_s0', key + '_genes_p05', 0)} / {g('ours_s0', key + '_null_median', 1)} / {g('ours_s0', key + '_perm_p')} ({g('ours_s0', key + '_n_splits', 0)})", "ACCEPT",
+        "The original Table S8 row is reproduced exactly by re-running the original statistic (an2.py logic) on the original counts; not significant in any input.")
+kk = "S8_excl. HEL361.2, HEL349.4, HEL363.2 (the original three)"
+add("Table S8", "PMOS test, excl. the three XIST-eroded lines: genes / null median / perm p (splits)", "642 / 580 / 0.447 (330)", "(code not preserved)", f"{g('theirs', kk + '_genes_p05', 0)} / {g('theirs', kk + '_null_median', 1)} / {g('theirs', kk + '_perm_p')} (330)",
+    f"{g('ours_s2', kk + '_genes_p05', 0)} / {g('ours_s2', kk + '_null_median', 1)} / {g('ours_s2', kk + '_perm_p')} (330)", f"{g('ours_s0', kk + '_genes_p05', 0)} / {g('ours_s0', kk + '_null_median', 1)} / {g('ours_s0', kk + '_perm_p')} (330)", "ACCEPT", "Reproduced exactly with the original counts (642 / 580 / 0.447); with ours 648 / 576 / 0.429. Note: with stranded counts only 2 lines are eroded, so excluding 'the eroded lines' means 5 CTRL vs 7 PMOS (792 splits).")
+mrow = lambda mo, me, k: mc.loc[(mo, me), k]
+add("Method check", "DESeq2 (NB, raw counts) ~ group: p < 0.05 / FDR < 0.1", "(optional)", "-", "-", f"{int(mrow('group', 'deseq2', 'genes_p05'))} / {int(mrow('group', 'deseq2', 'genes_FDR10'))} (OLS 422 / 0)", f"{int(mrow('group_xist', 'deseq2', 'genes_p05'))} / {int(mrow('group_xist', 'deseq2', 'genes_FDR10'))} with XIST", "ACCEPT",
+    f"No gene at padj < 0.1; ranking correlation with the OLS (Spearman of signed -log10 p) {mrow('group', 'deseq2', 'spearman_signed_p_vs_ols'):.2f}.")
+add("Method check", "limma-voom ~ group: p < 0.05 / FDR < 0.1", "(optional)", "-", "-", f"{int(mrow('group', 'limma_voom', 'genes_p05'))} / {int(mrow('group', 'limma_voom', 'genes_FDR10'))} (OLS 422 / 0)", f"{int(mrow('group_xist', 'limma_voom', 'genes_p05'))} / {int(mrow('group_xist', 'limma_voom', 'genes_FDR10'))} with XIST", "ACCEPT",
+    f"No gene at FDR < 0.1; ranking correlation with the OLS {mrow('group', 'limma_voom', 'spearman_signed_p_vs_ols'):.3f}: 'the diagnosis does not separate the transcriptomes' holds with other methods.")
+add("Step 5", "OLS without HEL350.3 (idic(20) mosaic): genes p < 0.05 / FDR < 0.1", "-", "-", f"{g('theirs', 'noHEL350.3_ols_p<0.05', 0)} / {g('theirs', 'noHEL350.3_ols_FDR<0.1', 0)}", f"{g('ours_s2', 'noHEL350.3_ols_p<0.05', 0)} / {g('ours_s2', 'noHEL350.3_ols_FDR<0.1', 0)} (log2FC r {g('ours_s2', 'noHEL350.3_ols_log2FC_corr_with_full', 2)} with the full model)", f"{g('ours_s0', 'noHEL350.3_ols_p<0.05', 0)} / {g('ours_s0', 'noHEL350.3_ols_FDR<0.1', 0)}", "ACCEPT",
+    "Same conclusion without HEL350.3 (fewer nominal genes, still 0 at FDR < 0.1).")
+add("Step 5", "HEL350.3 chr20: median per-gene z, 20p / 20q (null SD 0.10 / 0.07)", "(gain expected for 20q)", "-", f"{g('theirs', 'chr20_20p_HEL350.3_median_z', 2)} / {g('theirs', 'chr20_20q_HEL350.3_median_z', 2)}", f"{g('ours_s2', 'chr20_20p_HEL350.3_median_z', 2)} / {g('ours_s2', 'chr20_20q_HEL350.3_median_z', 2)}", f"{g('ours_s0', 'chr20_20p_HEL350.3_median_z', 2)} / {g('ours_s0', 'chr20_20q_HEL350.3_median_z', 2)}", "ACCEPT",
+    "Clear dosage signal: chr20q genes up (rank 1 of 14 lines, empirical p 0.001) and chr20p genes down (rank 14 of 14), as expected for idic(20); consistent with the karyotype. Genes of chr20 in HEL350.3 should be excluded or flagged in any expression/eQTL analysis.")
+add("Table 1 / S1", "clinical values: corrected clinical file vs the original Table S1", "identical", "-", "-", f"0 differences in 13 numeric variables x 14 donors; FAI = 100 x T / SHBG reproduced (max diff 0.005); groups identical", "-", "ACCEPT", "The original Table S1 equals the corrected clinical file (incl. FAI of HEL359 = 6.38).")
+add("Fig 2A-F", "Mann-Whitney p PMOS vs control: AMH / testosterone / FAI / FG / BMI / HOMA-IR", "<0.001 / 0.004 / 0.002 / 0.002 / 0.16 / 0.21", "-", "-", " / ".join(f"{mw.loc[k, 'p_mannwhitney']:.4f}" for k in ["amh", "testosterone", "fai", "fg_score", "bmi", "homa_ir"]), "-", "ACCEPT", "All six agree.")
+add("Step 1", "per-line correlation of log2(norm + 1), our counts vs the original file (genes expressed in both)", "-", "-", "-", f"r {cl.pearson_log2_expressed_in_both.min():.3f}-{cl.pearson_log2_expressed_in_both.max():.3f}; each line best matches its own column (14/14)", "-", "ACCEPT", "The original starting point agrees with our independent counts at the line level; the differences are gene-specific (see counts rows above).")
+add("Step 1", "RNA-seq QC (14 lines)", "-", "-", "-", "15.3-27.8 M reads; 88.2-90.2 % unique; 77.1-80.2 % assigned; 6.2-9.0 % mitochondrial; no line flagged as anomalous", "-", "ACCEPT", "Homogeneous libraries; HEL348.1 has the fewest reads and lowest unique % (88.2) but within normal range.")
+add("Method check", "the original pipeline (an1, an2, an_restore) on the original Normalized_counts reproduces the original numbers", "-", "443 / 627 / 0; PCs 43.1 / 8.5; p 0.791 / 0.083 / 0.033; VP 3.2 / 5.2 / 7.5 / 6.2; 465 / 362", "(same)", "-", "-", "ACCEPT", "The original code reproduces the original figure-book numbers; our independent code reproduces them too on the original data, so all differences with our own counts come from the data (counting/annotation), not the code.")
+V = pd.DataFrame(rows); V.to_csv(f"{out}/expected_vs_obtained.tsv", sep="\t", index=False)
+cnt = V.verdict.value_counts().to_dict(); print(cnt)
+open(f"{out}/expected_vs_obtained.txt", "w").write(V.to_string(index=False, max_colwidth=70) + f"\n\n{cnt}\n")

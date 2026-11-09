@@ -1,0 +1,6 @@
+criterion	n	pct_of_usable_panel	pct_of_full_panel	n_typed	n_imputed
+present (R2 >= 0.3 = all delivered)	1092158	97.95	97.74	171329	920829
+R2 >= 0.8	1083570	97.18	96.97	171325	912245
+R2 >= 0.3 and MAF >= 0.01	1080449	96.90	96.69	168906	911543
+R2 >= 0.8 and MAF >= 0.01	1073789	96.31	96.09	168905	904884
+BEFORE imputation (V1): array QC SNPs usable by PRS-CS	169093	15.17	15.13	169093	0

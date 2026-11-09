@@ -1,0 +1,11 @@
+[V1] SNPs with a weight: 169,093
+[V2] SNPs with a weight: 170,562
+[V3] SNPs with a weight: 169,093
+[common] SNPs with a weight in V1, V2 and V3: 168,688
+[alleles] SNPs where the scored allele differs between versions: 8,649 (weights are comparable only if 0; otherwise the sign of one of them is flipped below)
+[weights V1-V2] Pearson r = 0.757 | Spearman rho = 0.414 | same sign = 63.5% | slope V2~V1 = 0.704
+[weights V1-V3] Pearson r = 0.500 | Spearman rho = 0.386 | same sign = 62.6% | slope V3~V1 = 0.291
+[weights V2-V3] Pearson r = 0.507 | Spearman rho = 0.386 | same sign = 62.6% | slope V3~V2 = 0.317
+[concentration V1] sum(beta^2) = 0.003068 | top 1% SNPs carry 84.6% | top 10% carry 95.3% | max |beta| = 0.0215 | median |beta| = 2e-05
+[concentration V2] sum(beta^2) = 0.002656 | top 1% SNPs carry 82.6% | top 10% carry 94.7% | max |beta| = 0.0227 | median |beta| = 1.98e-05
+[concentration V3] sum(beta^2) = 0.001038 | top 1% SNPs carry 61.5% | top 10% carry 87.6% | max |beta| = 0.0117 | median |beta| = 1.92e-05

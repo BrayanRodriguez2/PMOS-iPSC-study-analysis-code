@@ -1,0 +1,6 @@
+analysis	genes_tested	same_direction_as_Min	pct	binomial_p_vs_50pct	nominal_p_lt_0_05	nominal_genes	FDR_lt_0_1
+our OLS, 14 lines	17	9	52.94	1	1	CER1 (discordant)	0
+our OLS, without the mosaic line	17	8	47.06	1	1	CER1 (discordant)	0
+our DESeq2, 14 lines	17	9	52.94	1	2	CER1 (discordant); SPP1 (discordant)	0
+our DESeq2, without the mosaic line	17	8	47.06	1	2	CER1 (discordant); SPP1 (discordant)	0
+Original Table S4 (original counts)	16	8	50	1	1	CER1 (discordant)	0

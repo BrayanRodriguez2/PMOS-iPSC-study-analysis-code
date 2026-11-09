@@ -1,0 +1,30 @@
+lead	chr	pos_grch38	p_value	alleles	in_prscs_panel	before_on_qc_array	before_usable_by_prscs	status	imputed_id	R2	ER2	MAF	present_R2_ge_0_3	present_R2_ge_0_8	usable_by_prscs_now_R2_ge_0_3	usable_by_prscs_now_R2_ge_0_8
+rs1641518	17	7648372	1.82e-08	G/A	False	no	no	Imputed	rs1641518	0.9796		0.2104	True	True	False	False
+rs8047587	16	53764710	1.08e-10	T/G	False	rs8047587	yes	Typed	rs8047587	1	1	0.3893	True	True	False	False
+rs76658602	2	47765810	2.75e-10	C/T	False	no	no	Imputed	rs76658602	0.987		0.2825	True	True	False	False
+rs3945628	9	123773274	2.77e-28	C/T	False	no	yes	Imputed	rs3945628	0.995		0.07879	True	True	False	False
+rs13389190	2	145039822	4.32e-08	G/A	True	no	yes	Imputed	rs13389190	0.9904		0.3357	True	True	True	True
+rs11075468	16	52344261	1.19e-07	T/C	False	rs11075468	yes	Typed	rs11075468	0.9999	0.9964	0.1821	True	True	False	False
+rs6712151	2	120386014	8.54e-08	C/T	False	no	no	Imputed	rs6712151	0.9783		0.4885	True	True	False	False
+rs17880096	22	28709214	8.81e-10	C/G	False	no	no	Imputed	rs17880096	0.9928		0.06395	True	True	False	False
+rs2070729	5	132484229	8.41e-08	A/C	True	rs2070729	yes	Typed	rs2070729	0.9999	0.9977	0.4286	True	True	True	True
+rs853854	20	32832951	0.000156	A/T	False	no	no	Imputed	rs853854	0.9823		0.4946	True	True	False	False
+rs10876864	12	56007301	7.36e-07	A/G	True	rs10876864	yes	Typed	rs10876864	1	1	0.4143	True	True	True	True
+rs12488257	3	44410402	1.15e-05	T/C	True	no	no	Imputed	rs12488257	0.9705		0.4266	True	True	True	True
+rs12149203	16	79684284	7.08e-07	G/C	False	no	yes	Imputed	rs12149203	0.9862		0.3014	True	True	False	False
+rs804263	8	11773406	2.99e-14	T/C	False	no	no	Imputed	rs804263	0.9932		0.4737	True	True	False	False
+rs74690816	2	212496910	5.94e-13	C/T	False	no	no	Imputed	rs74690816	0.995		0.1568	True	True	False	False
+rs12526762	6	19842325	1.72e-07	A/G	False	no	yes	Imputed	rs12526762	0.9783		0.1707	True	True	False	False
+rs2183958	9	94907391	5.73e-05	G/A	False	no	yes	Imputed	rs2183958	0.9636		0.3393	True	True	False	False
+rs13004711	2	49018711	1.41e-07	G/C	False	no	no	Imputed	rs13004711	0.9878		0.3908	True	True	False	False
+rs9312937	5	16835896	1.13e-11	C/T	True	no	no	Imputed	rs9312937	0.9652		0.4399	True	True	True	True
+rs670441	1	210295926	1.89e-05	T/C	True	no	yes	Imputed	rs670441	0.9892		0.392	True	True	True	True
+rs1784692	11	114078510	3.68e-10	C/T	True	rs1784692	yes	Typed	rs1784692	0.9998	0.9847	0.1429	True	True	True	True
+rs117568227	12	66053596	1.34e-09	A/G	False	no	no	Imputed	rs117568227	0.9905		0.01442	True	True	False	False
+rs1824982	12	75517620	8.45e-10	T/C	False	no	yes	Imputed	rs1824982	0.9715		0.4183	True	True	False	False
+rs4944653	11	87002953	1.4e-12	G/A	False	no	yes	Imputed	rs4944653	0.9824		0.3348	True	True	False	False
+rs7925543	11	102211146	7.32e-08	C/A	False	no	yes	Imputed	rs7925543	0.9771		0.08813	True	True	False	False
+rs148982377	7	99477415	1.81e-05	C/T	False	no	no	Imputed	rs148982377	0.9971		0.09632	True	True	False	False
+rs732310	19	1833339	1.65e-06	T/G	True	no	no	Imputed	rs732310	0.93		0.4385	True	True	True	True
+rs11031005	11	30204809	1.2e-19	C/T	False	no	yes	Imputed	rs11031005	0.9926		0.2214	True	True	False	False
+rs7589428	2	43334632	1.58e-09	G/A	False	no	no	Imputed	rs7589428	0.9897		0.4494	True	True	False	False

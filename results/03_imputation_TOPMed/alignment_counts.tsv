@@ -1,0 +1,5 @@
+step	variants	removed_in_step
+A0 SNP-QC dataset (b38_snpqc)	512119	NA
+A. palindromic SNPs removed (MAF>0.4 / not in reference / discordant)	511498	621
+B. REF/ALT not matching hg38 after flip/swap discarded (fixref -d)	511498	0
+C. allele-frequency discordance vs 1000G EUR (|diff|>0.2) removed	510607	891

@@ -1,0 +1,7 @@
+genotyped variants with ER2 < 0.5 in the clean file (to remove): 1,006 | unique IDs True
+  ER2 < 0.3: 377; ER2 median 0.358; R2 (server) median 0.967; MAF median 0.023
+  by subset: {'other genotyped': 969, '75 kept (FIN-supported)': 25, '358 discordant kept': 12}
+IN THE PRS-CS PANEL: by rsID in snpinfo_ukbb_hm3: 49 of 1006 (4.9 %) | usable by PRS-CS (sumstats, alleles, GRCh38 position): 49 (4.9 %)
+  in the usable panel, by subset: {'other genotyped': 49}
+reference: the usable panel has 1,114,978 SNPs; of the clean file's variants 1,081,058 are in the panel by rsID
+clean file after removal: 8,032,962 variants

@@ -1,0 +1,14 @@
+Licence of the tables in the results/ folder
+
+The tables in results/ (aggregated results of the analyses; no donor-level data) are licensed under the
+Creative Commons Attribution 4.0 International licence (CC BY 4.0).
+
+You are free to share and adapt the material for any purpose, even commercially, as long as you give appropriate
+credit, provide a link to the licence and indicate if changes were made.
+
+Full legal text: https://creativecommons.org/licenses/by/4.0/legalcode
+Summary:         https://creativecommons.org/licenses/by/4.0/
+
+Attribution: Masuma Khatun, Brayan Stiveen Rodriguez Morales, Vijayachitra Modhukur. (2026). Analysis code for: Donor-associated variation outweighs PMOS status in patient-derived iPSC transcriptomes: a genotyped, BMI-adjusted study of 14 lines. https://doi.org/10.5281/zenodo.24025022.
+
+The source code of this repository is licensed separately under the MIT License (see LICENSE).

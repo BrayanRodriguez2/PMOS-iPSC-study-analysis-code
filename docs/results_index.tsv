@@ -1,0 +1,43 @@
+file	produced_by	description
+results/01_genotype_QC/sample_snp_qc_counts.tsv	01_genotype_QC/03-04	Samples and SNPs after each QC step (array)
+results/03_imputation_TOPMed/alignment_counts.tsv	03_imputation_TOPMed/03_align_to_grch38	Variants after each alignment step
+results/03_imputation_TOPMed/snp_qc_counts.tsv	03_imputation_TOPMed/02_snp_qc	Samples and variants after each SNP-QC step before upload
+results/03_imputation_TOPMed/counts_v2.tsv	03_imputation_TOPMed/10_build_validate_v2	Variants of the cleaned (v2) upload files
+results/03_imputation_TOPMed/counts_by_chrom_v2.tsv	03_imputation_TOPMed/10_build_validate_v2	Variants per chromosome of the v2 upload files
+results/04_post_imputation_QC/summary_by_chrom.tsv	04_post_imputation_QC/06_global_qc_maf_loo	Delivered variants and R2 per chromosome
+results/04_post_imputation_QC/r2_by_maf.tsv	04_post_imputation_QC/06_global_qc_maf_loo	Imputation R2 by MAF interval
+results/04_post_imputation_QC/r2_by_maf_imputed_only.tsv	04_post_imputation_QC/06_global_qc_maf_loo	Imputation R2 by MAF interval, imputed variants only
+results/04_post_imputation_QC/r2_histogram.tsv	04_post_imputation_QC/06_global_qc_maf_loo	Histogram of R2
+results/04_post_imputation_QC/er2_summary.tsv	04_post_imputation_QC/06_global_qc_maf_loo	Leave-one-out ER2 of genotyped variants
+results/04_post_imputation_QC/er2_by_maf.tsv	04_post_imputation_QC/06_global_qc_maf_loo	ER2 by MAF interval
+results/04_post_imputation_QC/freq_vs_1000g_summary.tsv	04_post_imputation_QC/07_freq_vs_1000g	Imputed allele frequencies against 1000 Genomes
+results/04_post_imputation_QC/prscs_panel_coverage.tsv	04_post_imputation_QC/09_prscs_coverage	PRS-CS panel SNPs present in the imputed data
+results/04_post_imputation_QC/leads_imputed_coverage.tsv	04_post_imputation_QC/09_prscs_coverage	29 lead SNPs: status and quality after imputation
+results/04_post_imputation_QC/counts_clean.tsv	04_post_imputation_QC/11-13	Variants per chromosome after each filter of the clean dataset
+results/04_post_imputation_QC/counts_after_er2filter.tsv	04_post_imputation_QC/15_apply_er2_filter	Variants per chromosome before/after the ER2 filter
+results/04_post_imputation_QC/er2_filter_report.txt	04_post_imputation_QC/14_er2_filter_list	Summary of the variants removed by the ER2 filter
+results/05_PRS/array_snps_per_version.tsv	05_PRS/09-11	SNPs per PRS-CS version on the array data
+results/05_PRS/array_prs_version_correlations.tsv	05_PRS/12_summarize_prs_array	Correlations between PRS-CS versions (array data)
+results/05_PRS/array_weight_comparison.txt	05_PRS/13_compare_weights	Comparison of PRS-CS weights between versions
+results/05_PRS/imputed_snp_counts_bim_steps.tsv	05_PRS/15_prscs_bim_imputed	Panel SNPs at each step of the PRS-CS .bim construction
+results/05_PRS/imputed_snp_counts_scored.tsv	05_PRS/18_score_imputed	SNPs scored in each version
+results/05_PRS/imputed_correlations_between_scores.tsv	05_PRS/22_prs_analysis	Correlations between PRS versions and the GRS
+results/05_PRS/imputed_case_control_stats.tsv	05_PRS/22_prs_analysis	Case-control statistics of each score (aggregated)
+results/05_PRS/imputed_correlation_with_external_prs.tsv	05_PRS/22_prs_analysis	Correlation with an external reference PRS
+results/05_PRS/grs29_orientation.tsv	05_PRS/19_grs29	29 lead SNPs: alleles, orientation and frequencies
+results/06_RNAseq_counts_and_DE_validation/methods_comparison.tsv	06_.../09_deseq2_limma	DESeq2 and limma-voom against the OLS
+results/06_RNAseq_counts_and_DE_validation/nsig_permutation.tsv	06_.../07_de_replication	Genes associated with each trait against a permutation null
+results/06_RNAseq_counts_and_DE_validation/variance_partition_summary.tsv	06_.../07_de_replication	Variance partition (median % of total variance)
+results/06_RNAseq_counts_and_DE_validation/de_ols_per_gene.tsv.gz	06_.../07_de_replication	Per-gene OLS statistics, PMOS vs control, with and without XIST
+results/06_RNAseq_counts_and_DE_validation/deseq2_per_gene.tsv	06_.../09_deseq2_limma	Per-gene DESeq2 statistics, PMOS vs control
+results/06_RNAseq_counts_and_DE_validation/limma_voom_per_gene.tsv	06_.../09_deseq2_limma	Per-gene limma-voom statistics, PMOS vs control
+results/07_gene_set_analyses/fgsea_results_all.tsv	07_gene_set_analyses/05_fgsea	fgsea results for all rankings and collections
+results/07_gene_set_analyses/gsea_summary_custom_sets.tsv	07_gene_set_analyses/07_gsea_summary	Summary of the custom gene sets
+results/07_gene_set_analyses/gsea_summary_hallmark.tsv	07_gene_set_analyses/07_gsea_summary	Summary of the Hallmark results
+results/07_gene_set_analyses/fgsea_labelperm_calibration.tsv	07_gene_set_analyses/06_gsea_labelperm	Exact sample-label permutation calibration
+results/07_gene_set_analyses/geneset_score_tests.tsv	07_gene_set_analyses/02_geneset_score	Gene-set score tests against expression-matched random sets
+results/08_preprint_tasks/min_20_genes_direction.tsv	08_preprint_tasks/03_min_direction	Direction check of 20 published genes
+results/08_preprint_tasks/min_20_genes_summary.tsv	08_preprint_tasks/03_min_direction	Summary of the direction check
+results/08_preprint_tasks/array_pca_variance.tsv	08_preprint_tasks/02_array_pca_report	Variance explained by the array PCs
+results/08_preprint_tasks/S3_lead_variants_updated.tsv	08_preprint_tasks/07_update_S2_S3	Updated table of the 29 lead variants
+results/08_preprint_tasks/s7a_vs_moolhuijsen_genes.tsv	08_preprint_tasks/04_s7a_vs_paper	Consensus genes of the manuscript table against the GWAS supplement

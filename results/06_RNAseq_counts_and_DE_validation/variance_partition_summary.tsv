@@ -1,0 +1,6 @@
+factor	median_pct	null_median_pct	perm_p
+PMOS status	3.158	3.758	0.7163
+BMI	5.257	3.876	0.2078
+Age	7.611	3.833	0.05295
+XIST (log2)	6.752	3.752	0.07393
+Residual	63.02		

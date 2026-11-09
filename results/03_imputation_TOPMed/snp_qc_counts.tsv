@@ -1,0 +1,7 @@
+step	samples	variants	removed_in_step
+T0 raw array (b38)	140	777016	NA
+T1 autosomes 1-22	140	731379	45637
+T2 biallelic A/C/G/T SNPs only	140	716453	14926
+T3 variant call rate >= 0.95 (140 samples)	140	701377	15076
+T4 not monomorphic	140	514181	187196
+T5 no duplicated positions = b38_snpqc	140	512119	2062

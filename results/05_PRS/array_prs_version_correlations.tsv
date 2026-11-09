@@ -1,0 +1,4 @@
+pair	n_samples	pearson_r	spearman_rho
+V1-V2	129	0.8739	0.8451
+V1-V3	129	0.7298	0.7115
+V2-V3	129	0.7142	0.6763

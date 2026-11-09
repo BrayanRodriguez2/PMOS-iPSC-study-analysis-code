@@ -1,0 +1,11 @@
+set	reference	n	pearson_r	mean_diff	mean_abs_diff	n_abs_diff_gt_0_2	pct_abs_diff_gt_0_2
+common, all	EUR	44946	0.9774	0.0061	0.0410	20	0.0445
+common, all	FIN	44946	0.9885	0.0028	0.0294	5	0.0111
+common, R2 >= 0.8	EUR	44925	0.9774	0.0061	0.0410	20	0.0445
+common, R2 >= 0.8	FIN	44925	0.9885	0.0028	0.0294	5	0.0111
+common, Typed	EUR	2697	0.9788	0.0072	0.0420	1	0.0371
+common, Typed	FIN	2697	0.9891	0.0040	0.0296	1	0.0371
+common, Imputed	EUR	42249	0.9773	0.0060	0.0409	19	0.0450
+common, Imputed	FIN	42249	0.9885	0.0027	0.0294	4	0.0095
+common, Imputed R2 0.3-0.8	EUR	21	0.9927	-0.0105	0.0315	0	0.0000
+common, Imputed R2 0.3-0.8	FIN	21	0.9963	-0.0002	0.0210	0	0.0000

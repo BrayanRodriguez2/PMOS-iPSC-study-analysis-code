@@ -1,0 +1,145 @@
+release_script	original_step_script	what_it_produces	run_mode
+00_common/01_xlsx_to_tsv.py	48_xlsx_to_tsv.py	Dumps every sheet of an .xlsx to TSV (standard library only); used to read supplementary tables.	local
+00_common/02_pdf_text.sh	60_pdf_text.sh	Text of PDF files with pdftotext (figure book, supplementary information).	login
+01_genotype_QC/01_setup_env.sbatch	01_setup_env.sbatch	Conda environment 'prs' (PLINK 1.9/2, Python, R).	sbatch
+01_genotype_QC/02_ped_to_bed.sbatch	02_ped_to_bed.sbatch	GenomeStudio PED/MAP export -> sorted PLINK binary dataset.	sbatch
+01_genotype_QC/03_sample_qc.sbatch	09_qc_samples.sbatch	Sample QC (call rate, heterozygosity, sex, kinship) and the list of excluded samples.	sbatch
+01_genotype_QC/03_sample_qc.py	09_sample_qc_decide.py	Sample QC (call rate, heterozygosity, sex, kinship) and the list of excluded samples.	sbatch
+01_genotype_QC/04_snp_qc_dedup_rename.sbatch	10_qc_variants.sbatch	SNP QC, duplicate handling and renaming to rsIDs; QC PLINK datasets.	sbatch
+01_genotype_QC/04_snp_qc_dedup_rename.py	10_dedup_rename.py	SNP QC, duplicate handling and renaming to rsIDs; QC PLINK datasets.	sbatch
+01_genotype_QC/05_raw_snp_callrate.sbatch	10c_raw_snp_callrate.sbatch	Call rate per SNP of the raw array in the QC-pass samples.	sbatch
+01_genotype_QC/06_qc_by_chip.py	09b_qc_by_chip.py	Call rate and heterozygosity summarised by array chip.	sbatch
+01_genotype_QC/06_qc_by_chip.sbatch	09b_qc_by_chip.sbatch	Call rate and heterozygosity summarised by array chip.	sbatch
+01_genotype_QC/07_callrate_sensitivity.py	09c_callrate_sensitivity.py	Sensitivity of the sample set to the call-rate threshold.	sbatch
+01_genotype_QC/07_callrate_sensitivity.sbatch	09c_callrate_sensitivity.sbatch	Sensitivity of the sample set to the call-rate threshold.	sbatch
+01_genotype_QC/08_qc_figures.py	10b_qc_figures.py	Standard QC figures drawn from the QC tables.	sbatch
+01_genotype_QC/08_qc_figures.sbatch	10b_qc_figures.sbatch	Standard QC figures drawn from the QC tables.	sbatch
+02_contamination_identity/01_idat_env.sbatch	22_idat_env.sbatch	Conda environment 'idat' (bcftools + gtc2vcf plugin, Python).	sbatch
+02_contamination_identity/02_idat_to_gtc.sbatch	23_idat_to_gtc.sbatch	IDAT -> GTC (genotype calls, BAF, Log R Ratio) with the project manifest and cluster file.	sbatch
+02_contamination_identity/03_snp_map.sbatch	23b_snp_map.sbatch	Locus table of the array manifest (BPM).	sbatch
+02_contamination_identity/04_baf_contamination.py	24_baf_contamination.py	BAF/LRR summaries and the DNA-contamination estimate per sample.	sbatch
+02_contamination_identity/04_baf_contamination.sbatch	24_baf_contamination.sbatch	BAF/LRR summaries and the DNA-contamination estimate per sample.	sbatch
+02_contamination_identity/05_star_setup.sbatch	25_star_setup.sbatch	Conda environment 'rnaseq', GENCODE v50 references and STAR genome index.	sbatch
+02_contamination_identity/06_star_align.sbatch	26_star_align.sbatch	STAR alignment of the 14 RNA-seq FASTQ files (array job).	sbatch
+02_contamination_identity/07_rna_sites.sbatch	27a_rna_sites.sbatch	Array SNPs that can be genotyped from RNA-seq (inside exons).	sbatch
+02_contamination_identity/08_rna_genotypes.sbatch	27b_rna_genotypes.sbatch	Genotypes of each iPSC line called from its RNA-seq BAM at those SNPs.	sbatch
+02_contamination_identity/09_rna_concordance.py	28_rna_concordance.py	Line x donor genotype concordance (identity check).	sbatch
+02_contamination_identity/09_rna_concordance.sbatch	28_rna_concordance.sbatch	Line x donor genotype concordance (identity check).	sbatch
+02_contamination_identity/10_chip_layout.py	29_chip_layout.py	Tests and layout figure of the chip with the contamination signal.	sbatch
+02_contamination_identity/10_chip_layout.sbatch	29_chip_layout.sbatch	Tests and layout figure of the chip with the contamination signal.	sbatch
+02_contamination_identity/11_het_baf_vs_rna.py	30_het_baf_vs_rna.py	BAF of array-heterozygous sites confirmed or not by RNA-seq.	sbatch
+02_contamination_identity/11_het_baf_vs_rna.sbatch	30_het_baf_vs_rna.sbatch	BAF of array-heterozygous sites confirmed or not by RNA-seq.	sbatch
+02_contamination_identity/12_ibs0_donor_profile.py	31_ibs0_donor_profile.py	IBS0 profile of focal donors against the rest of the cohort.	sbatch
+02_contamination_identity/12_ibs0_donor_profile.sbatch	31_ibs0_donor_profile.sbatch	IBS0 profile of focal donors against the rest of the cohort.	sbatch
+03_imputation_TOPMed/01_setup_references.sbatch	18_topmed_setup_refs.sbatch	GRCh38 reference FASTA and reference-panel resources for the pre-imputation checks.	sbatch
+03_imputation_TOPMed/02_snp_qc.sbatch	19_topmed_snp_qc.sbatch	SNP QC for imputation (call rate, monomorphic, duplicated positions).	sbatch
+03_imputation_TOPMed/02_snp_qc.py	19_dup_positions.py	SNP QC for imputation (call rate, monomorphic, duplicated positions).	sbatch
+03_imputation_TOPMed/03_align_to_grch38.sbatch	20_topmed_align.sbatch	Strand/allele alignment to GRCh38 (bcftools +fixref, frequency-based strand resolution, frequency filter).	sbatch
+03_imputation_TOPMed/03_align_to_grch38_resolve_strand.py	20_resolve_strand.py	Strand/allele alignment to GRCh38 (bcftools +fixref, frequency-based strand resolution, frequency filter).	sbatch
+03_imputation_TOPMed/03_align_to_grch38_freq_filter.py	20_freq_filter.py	Strand/allele alignment to GRCh38 (bcftools +fixref, frequency-based strand resolution, frequency filter).	sbatch
+03_imputation_TOPMed/04_export_validate.sbatch	21_topmed_export_validate.sbatch	Per-chromosome VCF export and validation for the TOPMed server.	sbatch
+03_imputation_TOPMed/04_export_validate.py	21_vcf_checks.py	Per-chromosome VCF export and validation for the TOPMed server.	sbatch
+03_imputation_TOPMed/05_extra_checks.sbatch	21b_topmed_extra_checks.sbatch	Additional checks of the upload VCFs.	sbatch
+03_imputation_TOPMed/06_qc_only_download.sh	32_topmed_qc_download.sh	Download of the server QC-only report (link passed as an argument).	local
+03_imputation_TOPMed/07_qc_only_verify.py	33_qc_only_verify.py	Independent verification of the server QC-only statistics.	sbatch
+03_imputation_TOPMed/07_qc_only_verify.sbatch	33_qc_only_verify.sbatch	Independent verification of the server QC-only statistics.	sbatch
+03_imputation_TOPMed/08_frequency_vs_1000g.py	34_1000g_compare.py	Allele frequencies of discordant SNPs against 1000 Genomes EUR/FIN.	sbatch
+03_imputation_TOPMed/08_frequency_vs_1000g.sbatch	34_1000g_compare.sbatch	Allele frequencies of discordant SNPs against 1000 Genomes EUR/FIN.	sbatch
+03_imputation_TOPMed/09_exclusion_rule.py	35_exclusion_rule.py	Rule that removes problematic genotyped SNPs before the final upload.	sbatch
+03_imputation_TOPMed/09_exclusion_rule.sbatch	35_exclusion_rule.sbatch	Rule that removes problematic genotyped SNPs before the final upload.	sbatch
+03_imputation_TOPMed/10_build_validate_v2.sbatch	36_build_validate_v2.sbatch	Cleaned v2 upload VCFs and their validation.	sbatch
+04_post_imputation_QC/01_fetch_download_script.sh	38a_imputation_fetch_script.sh	Fetches (without running) the download script of the imputation results for inspection.	login
+04_post_imputation_QC/02_download.sbatch	38b_imputation_download.sbatch	Downloads the imputation results and checks their md5 sums.	sbatch
+04_post_imputation_QC/03_unzip_check.sbatch	39_unzip_check.sbatch	Decrypts/unzips each chromosome (password read from a file) and checks the VCFs (array job).	sbatch
+04_post_imputation_QC/04_unzip_summary.sh	39b_unzip_summary.sh	Summary of the per-chromosome unzip checks.	login
+04_post_imputation_QC/05_info_tables.py	40_info_tables.py	Per-chromosome tables from the server info files.	sbatch
+04_post_imputation_QC/05_info_tables.sbatch	40_info_tables.sbatch	Per-chromosome tables from the server info files.	sbatch
+04_post_imputation_QC/06_global_qc_maf_loo.py	41_qc_global_maf_loo.py	Global R2, R2 by MAF interval and leave-one-out ER2 of genotyped SNPs.	sbatch
+04_post_imputation_QC/06_global_qc_maf_loo.sbatch	41_qc_global_maf_loo.sbatch	Global R2, R2 by MAF interval and leave-one-out ER2 of genotyped SNPs.	sbatch
+04_post_imputation_QC/07_freq_vs_1000g.py	42_freq_vs_1000g.py	Imputed allele frequencies against 1000 Genomes EUR/FIN in sampled windows.	sbatch
+04_post_imputation_QC/07_freq_vs_1000g.sbatch	42_freq_vs_1000g.sbatch	Imputed allele frequencies against 1000 Genomes EUR/FIN in sampled windows.	sbatch
+04_post_imputation_QC/08_sample_checks.py	43_sample_checks.py	Concordance, heterozygosity and outlier checks of the samples after imputation.	sbatch
+04_post_imputation_QC/08_sample_checks_concordance.sbatch	43a_concordance.sbatch	Concordance, heterozygosity and outlier checks of the samples after imputation.	sbatch
+04_post_imputation_QC/08_sample_checks_het_merge.sbatch	43b_het_merge.sbatch	Concordance, heterozygosity and outlier checks of the samples after imputation.	sbatch
+04_post_imputation_QC/09_prscs_coverage.py	44_prscs_coverage.py	Coverage of the PRS-CS LD panel and of the 29 lead SNPs in the imputed data.	sbatch
+04_post_imputation_QC/09_prscs_coverage.sbatch	44_prscs_coverage.sbatch	Coverage of the PRS-CS LD panel and of the 29 lead SNPs in the imputed data.	sbatch
+04_post_imputation_QC/10_make_keep_lists.sh	45_make_keep_lists.sh	Sample lists (main QC set and sensitivity set) for PLINK --keep.	login
+04_post_imputation_QC/11_clean_chr.sbatch	45a_clean_chr.sbatch	Per-chromosome clean PLINK2 dosage files (R2/MAF/HWE filters).	sbatch
+04_post_imputation_QC/12_clean_merge.sbatch	45b_clean_merge.sbatch	Merge of the per-chromosome clean files.	sbatch
+04_post_imputation_QC/13_clean_tables.py	45_clean_tables.py	Variant table and counts of the clean dataset.	sbatch
+04_post_imputation_QC/13_clean_tables.sbatch	45c_clean_tables.sbatch	Variant table and counts of the clean dataset.	sbatch
+04_post_imputation_QC/14_er2_filter_list.py	47_er2_filter_list.py	List of genotyped variants with ER2 < 0.5 and their PRS-CS panel membership.	sbatch
+04_post_imputation_QC/14_er2_filter_list.sbatch	47a_er2_list.sbatch	List of genotyped variants with ER2 < 0.5 and their PRS-CS panel membership.	sbatch
+04_post_imputation_QC/15_apply_er2_filter.sbatch	47b_apply_er2_filter.sbatch	Removes those variants from the clean dataset (previous files renamed, not deleted).	sbatch
+04_post_imputation_QC/16_variant_table.sbatch	47c_variant_table.sbatch	Variant table of the clean dataset after the ER2 filter.	sbatch
+04_post_imputation_QC/17_er2_missing_variants.py	71_er2_missing7.py	Why a few kept variants have no ER2 (absent from the server output).	sbatch
+04_post_imputation_QC/17_er2_missing_variants.sbatch	71_er2_missing7.sbatch	Why a few kept variants have no ER2 (absent from the server output).	sbatch
+05_PRS/01_download_ld_panel_1kg.sbatch	03_download_ld_panel.sbatch	PRS-CS 1000 Genomes EUR LD panel.	sbatch
+05_PRS/02_download_ld_panel_ukbb.sbatch	13_download_ukbb_panel.sbatch	PRS-CS UK Biobank EUR LD panel.	sbatch
+05_PRS/03_count_overlap.py	04_count_overlap.py	Overlap of array SNPs with the PRS-CS panel (by rsID, with allele checks).	sbatch
+05_PRS/03_count_overlap.sbatch	04_count_overlap.sbatch	Overlap of array SNPs with the PRS-CS panel (by rsID, with allele checks).	sbatch
+05_PRS/04_lead_snps_lookup.py	11_lead_snps_lookup.py	The 29 lead SNPs in the summary statistics and genome-wide significant loci.	sbatch
+05_PRS/04_lead_snps_lookup.sbatch	11_lead_snps_lookup.sbatch	The 29 lead SNPs in the summary statistics and genome-wide significant loci.	sbatch
+05_PRS/05_ld_proxies.py	12_ld_proxies.py	LD proxies of the lead SNPs and locus coverage on the array.	sbatch
+05_PRS/05_ld_proxies.sbatch	12_ld_proxies.sbatch	LD proxies of the lead SNPs and locus coverage on the array.	sbatch
+05_PRS/06_leads_qc_fate.sbatch	12b_leads_qc_fate.sbatch	What happened to the lead SNPs in the SNP QC.	sbatch
+05_PRS/07_prepare_prscs_inputs.sbatch	14_prepare_prscs_inputs.sbatch	Summary statistics in PRS-CS format, n_gwas and the whole-panel .bim.	sbatch
+05_PRS/07_prepare_prscs_inputs.py	14_prepare_sumstats.py	Summary statistics in PRS-CS format, n_gwas and the whole-panel .bim.	sbatch
+05_PRS/08_setup_prscs_env.sbatch	14b_setup_prscs_env.sbatch	Conda environment 'prscs' (NumPy 1.26) and PRS-CS checkout.	sbatch
+05_PRS/09_run_prscs_array.sbatch	15_run_prscs.sbatch	PRS-CS per chromosome (array job; versions V1, V2, V3 on the un-imputed array).	sbatch
+05_PRS/10_build_weights_array.py	16_build_weights.py	Merges PRS-CS output and aligns the effect allele to the array alleles.	local
+05_PRS/11_score_prs_array.sbatch	16_score_prs.sbatch	plink2 --score of V1/V2/V3 on the array data and summary.	sbatch
+05_PRS/12_summarize_prs_array.py	16_summarize_prs.py	Standardised scores, correlations between versions and figures (array PRS).	local
+05_PRS/13_compare_weights.py	17_compare_weights.py	Comparison of the weights between PRS-CS versions.	sbatch
+05_PRS/13_compare_weights.sbatch	17_compare_weights.sbatch	Comparison of the weights between PRS-CS versions.	sbatch
+05_PRS/14_dna_labels.py	48b_dna_labels.py	Case/control labels from the DNA-extraction sheet (TSV dump).	local
+05_PRS/15_prscs_bim_imputed.py	49_prscs_bim_imputed.py	PRS-CS .bim with panel rsIDs matched to the imputed data by position and alleles.	sbatch
+05_PRS/15_prscs_bim_imputed.sbatch	49_prscs_bim_imputed.sbatch	PRS-CS .bim with panel rsIDs matched to the imputed data by position and alleles.	sbatch
+05_PRS/16_run_prscs_imputed.sbatch	50_run_prscs_imputed.sbatch	PRS-CS per chromosome on the imputed data (array job; V1, V2).	sbatch
+05_PRS/17_build_weights_imputed.py	51_build_weights_imputed.py	PRS-CS weights returned to chr:pos:ref:alt IDs.	local
+05_PRS/18_score_imputed.sbatch	51_score_imputed.sbatch	plink2 --score on imputed dosages (V1, V2, V3, V1 R2>=0.8, GRS29).	sbatch
+05_PRS/19_grs29.py	51b_grs29.py	Weights and allele-orientation table of the 29-SNP genetic risk score.	sbatch
+05_PRS/19_grs29.sbatch	51b_grs29.sbatch	Weights and allele-orientation table of the 29-SNP genetic risk score.	sbatch
+05_PRS/20_verify_score.py	51c_verify_score.py	Independent re-computation of the scores from the VCF dosages.	sbatch
+05_PRS/20_verify_score.sbatch	51c_verify_score.sbatch	Independent re-computation of the scores from the VCF dosages.	sbatch
+05_PRS/21_prscs_log_counts.sh	51d_prscs_log_counts.sh	SNPs seen by PRS-CS in each version (from the job logs).	login
+05_PRS/22_prs_analysis.py	52_prs_analysis.py	Case-control statistics, stability, comparison with an external PRS, figures.	sbatch
+05_PRS/22_prs_analysis.sbatch	52_prs_analysis.sbatch	Case-control statistics, stability, comparison with an external PRS, figures.	sbatch
+06_RNAseq_counts_and_DE_validation/01_setup_env.sbatch	61_setup_deg_env.sbatch	Conda environment 'degval' (featureCounts, R, DESeq2, limma, edgeR, Python).	sbatch
+06_RNAseq_counts_and_DE_validation/02_featurecounts.sbatch	63_featurecounts.sbatch	Gene counts with featureCounts in three strand settings (-s 0/1/2).	sbatch
+06_RNAseq_counts_and_DE_validation/03_counts_qc_norm.py	64_counts_qc_norm.py	Library orientation, per-line QC, size-factor normalisation, comparison with the external file.	sbatch
+06_RNAseq_counts_and_DE_validation/03_counts_qc_norm.sbatch	64_counts_qc_norm.sbatch	Library orientation, per-line QC, size-factor normalisation, comparison with the external file.	sbatch
+06_RNAseq_counts_and_DE_validation/04_dropout_genes.py	64b_dropout_genes.py	Genes lost in one of the two count tables.	local
+06_RNAseq_counts_and_DE_validation/05_clinical.py	65a_clinical.py	Donor clinical table and group comparisons from the corrected workbook.	local
+06_RNAseq_counts_and_DE_validation/06_dump_package_tables.sh	62_xlsx_dump.sh	TSV dumps of the supplementary tables and of the clinical workbook.	login
+06_RNAseq_counts_and_DE_validation/07_de_replication.py	65_deg_analysis.py	Independent replication of the expression analyses (OLS, PCA, permutations, variance partition, chr20).	sbatch
+06_RNAseq_counts_and_DE_validation/07_de_replication.sbatch	65_deg_run.sbatch	Independent replication of the expression analyses (OLS, PCA, permutations, variance partition, chr20).	sbatch
+06_RNAseq_counts_and_DE_validation/08_external_pipeline_check.py	66a_their_inputs.py	Runs the original analysis scripts on the original counts (requires original_analysis/).	sbatch
+06_RNAseq_counts_and_DE_validation/08_external_pipeline_check.sbatch	66b_their_pipeline.sbatch	Runs the original analysis scripts on the original counts (requires original_analysis/).	sbatch
+06_RNAseq_counts_and_DE_validation/09_deseq2_limma.R	67_deseq2_limma.R	DESeq2 and limma-voom on raw counts and comparison with the OLS.	sbatch
+06_RNAseq_counts_and_DE_validation/09_deseq2_limma.py	67b_methods_compare.py	DESeq2 and limma-voom on raw counts and comparison with the OLS.	sbatch
+06_RNAseq_counts_and_DE_validation/09_deseq2_limma.sbatch	67_methods.sbatch	DESeq2 and limma-voom on raw counts and comparison with the OLS.	sbatch
+06_RNAseq_counts_and_DE_validation/10_verdicts.py	69_verdicts.py	Expected-vs-obtained table with verdicts.	local
+07_gene_set_analyses/01_setup_gsea_env.sbatch	72a_setup_gsea_env.sbatch	Conda environment 'gsea' (R, fgsea, msigdbr).	sbatch
+07_gene_set_analyses/02_geneset_score.py	72_geneset_score.py	Replication of the GWAS-gene-set score test with expression-matched random sets.	sbatch
+07_gene_set_analyses/02_geneset_score.sbatch	72_geneset_score.sbatch	Replication of the GWAS-gene-set score test with expression-matched random sets.	sbatch
+07_gene_set_analyses/03_deseq2_without_one_line.sbatch	73a_deseq2_no350.sbatch	DESeq2/limma re-run without one line (sensitivity).	sbatch
+07_gene_set_analyses/04_make_rankings.py	73_make_rankings.py	Ranking statistics and custom gene sets for the GSEA.	sbatch
+07_gene_set_analyses/04_make_rankings.sbatch	73_rankings.sbatch	Ranking statistics and custom gene sets for the GSEA.	sbatch
+07_gene_set_analyses/05_fgsea.R	74_fgsea.R	fgsea preranked GSEA (custom sets and MSigDB Hallmark).	sbatch
+07_gene_set_analyses/05_fgsea.sbatch	74_fgsea.sbatch	fgsea preranked GSEA (custom sets and MSigDB Hallmark).	sbatch
+07_gene_set_analyses/06_gsea_labelperm.py	75_gsea_labelperm.py	Exact sample-label permutation calibration of the GSEA.	sbatch
+07_gene_set_analyses/06_gsea_labelperm.sbatch	75_gsea_labelperm.sbatch	Exact sample-label permutation calibration of the GSEA.	sbatch
+07_gene_set_analyses/07_gsea_summary.py	76_gsea_summary.py	Summary tables and calibration figure.	sbatch
+07_gene_set_analyses/07_gsea_summary.sbatch	76_gsea_summary.sbatch	Summary tables and calibration figure.	sbatch
+08_preprint_tasks/01_array_pca.sbatch	80_array_pca.sbatch	Array genotype PCA (LD-pruned, long-range LD regions removed).	sbatch
+08_preprint_tasks/02_array_pca_report.py	80b_array_pca_report.py	Variance explained, outlier check, comparison with the external table, figures.	sbatch
+08_preprint_tasks/02_array_pca_report.sbatch	80b_array_pca_report.sbatch	Variance explained, outlier check, comparison with the external table, figures.	sbatch
+08_preprint_tasks/03_min_direction.py	81_min_direction.py	Direction check of 20 genes named in a published PCOS iPSC study.	sbatch
+08_preprint_tasks/03_min_direction.sbatch	81_min_direction.sbatch	Direction check of 20 genes named in a published PCOS iPSC study.	sbatch
+08_preprint_tasks/04_s7a_vs_paper.py	82_s7a_vs_paper.py	Consensus genes of the manuscript table against the GWAS supplementary tables.	sbatch
+08_preprint_tasks/04_s7a_vs_paper.sbatch	82_s7a_vs_paper.sbatch	Consensus genes of the manuscript table against the GWAS supplementary tables.	sbatch
+08_preprint_tasks/05_setup_xlsx.sbatch	83a_setup_xlsx.sbatch	Adds openpyxl to the 'degval' environment.	sbatch
+08_preprint_tasks/06_x_het.sbatch	83b_x_het.sbatch	Heterozygosity of chromosome X per sample (raw array).	sbatch
+08_preprint_tasks/07_update_S2_S3.py	83_update_S2_S3.py	Updated supplementary tables S2 (sample QC) and S3 (lead variants).	sbatch
+08_preprint_tasks/07_update_S2_S3.sbatch	83_update_S2_S3.sbatch	Updated supplementary tables S2 (sample QC) and S3 (lead variants).	sbatch

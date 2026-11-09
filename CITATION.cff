@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the archived release and the related manuscript."
+title: "Analysis code for: Donor-associated variation outweighs PMOS status in patient-derived iPSC transcriptomes: a genotyped, BMI-adjusted study of 14 lines"
+type: software
+version: "1.0.1"
+date-released: "2026-11-09"
+doi: "https://doi.org/10.5281/zenodo.24025021"
+license: MIT
+repository-code: "https://github.com/BrayanRodriguez2/PMOS-iPSC-study-analysis-code"
+authors:
+  - family-names: "Khatun"
+    given-names: "Masuma"
+    orcid: "https://orcid.org/0000-0003-2976-2319"
+    affiliation: "Department of Obstetrics and Gynecology, University of Helsinki and Helsinki University Hospital, Helsinki, Finland"
+  - family-names: "Rodriguez Morales"
+    given-names: "Brayan Stiveen"
+    orcid: "https://orcid.org/0009-0006-5047-6324"
+    affiliation: "Celvia CC AS, Tartu, Estonia"
+  - family-names: "Modhukur"
+    given-names: "Vijayachitra"
+    orcid: "https://orcid.org/0000-0002-7123-9903"
+    affiliation: "Department of Obstetrics and Gynecology, Institute of Clinical Medicine, University of Tartu, Tartu, Estonia"
+abstract: "Analysis code for the genotype QC, imputation, polygenic score and RNA-seq analyses of a study of iPSC lines from women with PMOS and controls. Aggregated result tables are in results/ (CC BY 4.0)."
+keywords:
+  - iPSC
+  - PCOS
+  - polygenic risk score
+  - RNA-seq
